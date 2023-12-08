@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% block content %}
+{% load static %}
+<section id="new-arrivals" class="new-arrivals">
+    <div class="container">
+        <div class="section-header">
+            <h2>Muebles</h2>
+        </div><!--/.section-header-->
+        <div class="new-arrivals-content">
+            <div class="row">
+                {% for producto in productos %}
+                    {% if producto.categoria.nombre == 'Muebles' %}
+                        <div class="col-md-3 col-sm-4">
+                            <div class="single-new-arrival">
+                                <div class="single-new-arrival-bg">
+                                    <img src="{{ producto.image.url }}" alt="{{ producto.nombre }}">
+                                    <div class="single-mueble-bg-overlay"></div>
+                                    {% if producto.stock > 0 %}
+                                        <div class="sale bg-1">
+                                            <p>En stock</p>
+                                        </div>
+                                    {% else %}
+                                        <div class="sale bg-2">
+                                            <p>Agotado</p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <h4><a href="{% url 'detalle_producto' producto.id %}">{{ producto.nombre }}</a></h4>
+                                <p class="mueble-product-price">{{ producto.precio }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div><!--/.container-->
+</section><!--/.muebles-->
+
+<!--footer start-->
+<footer id="footer"  class="footer">
+    <div class="container">
+        <div class="hm-footer-copyright text-center">
+            <div class="footer-social">
+                <a href="#"><i class="fa fa-facebook"></i></a>	
+                <a href="#"><i class="fa fa-instagram"></i></a>
+                <a href="#"><i class="fa fa-linkedin"></i></a>
+                <a href="#"><i class="fa fa-pinterest"></i></a>
+                <a href="#"><i class="fa fa-behance"></i></a>	
+            </div>
+            <p>
+                                    &copy;copyright. <a href="https://www.themesine.com/">Mathilo S.A.</a> 2023
+            </p><!--/p-->
+        </div><!--/.text-center-->
+    </div><!--/.container-->
+
+    <div id="scroll-Top">
+        <div class="return-to-top">
+            <i class="fa fa-angle-up " id="scroll-top" data-toggle="tooltip" data-placement="top" title="" data-original-title="Back to Top" aria-hidden="true"></i>
+        </div>
+        
+    </div><!--/.scroll-Top-->
+    
+</footer><!--/.footer-->
+<!--footer end-->
+
+{% endblock %}

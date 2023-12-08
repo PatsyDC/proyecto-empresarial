@@ -1,0 +1,130 @@
+{% extends "layout.html" %}
+{% block content %}
+{% load static %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- HTML -->
+<div class="container">
+    <h1>Carrito de Compras</h1>
+    <br>
+    <br>
+    <form id="update-cart-form" method="post">
+        {% csrf_token %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Artículo</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Sub-Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in carrito %}
+                    <tr>
+                        <td>{{ item.producto.nombre }}</td>
+                        <td>${{ item.producto.precio }}</td>
+                        <td>
+                            <input type="number" name="cantidad-{{ item.id }}" value="{{ item.cantidad }}" min="1">
+                        </td>
+                        <td>${{ item.total }}</td>
+                        <td>
+                            <button type="button" class="update-btn" data-item-id="{{ item.id }}">Actualizar</button>
+                            <button type="button" class="delete-btn" data-item-id="{{ item.id }}">Eliminar</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if mensaje_stock_insuficiente %}
+            <p style="color: red;">{{ mensaje_stock_insuficiente }}</p>
+        {% endif %}
+
+        {% if not mensaje_stock_insuficiente %}
+            <!-- Solo muestra el botón y PayPal si no hay mensaje de stock insuficiente -->
+            <button type="submit" name="procesar_pago">Procesar Pago</button>
+            
+        {% endif %}
+        
+    </form>
+    {{ paypal.render }}
+</div>
+
+<!-- NOTIFICACIONES DE JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    $(document).ready(function() {
+        $(".update-btn").click(function() {
+            var itemId = $(this).data('item-id');
+            var cantidad = $("input[name='cantidad-" + itemId + "']").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/actualizar_cantidad/" + itemId + "/",
+                data: {
+                    cantidad: cantidad,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(data) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Éxito!',
+                        text: data.message,
+                    }).then(() => {
+                        // Recarga la página después de hacer clic en "OK"
+                        location.reload();
+                    });
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Error al actualizar la cantidad: ' + error,
+                    });
+                }
+            });
+        });
+
+        $(".delete-btn").click(function() {
+            var itemId = $(this).data('item-id');
+
+            $.ajax({
+                type: "POST",
+                url: "/eliminar_item/" + itemId + "/",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(data) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Éxito!',
+                        text: data.message,
+                    }).then(() => {
+                        // Recarga la página después de hacer clic en "OK"
+                        location.reload();
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+{% if procesar_pago and mensaje_stock_insuficiente %}
+    <script>
+        // Muestra la alerta SweetAlert2 si hay stock insuficiente durante el procesamiento del pago
+        Swal.fire({
+            icon: 'error',
+            title: 'Stock insuficiente',
+            text: '{{ mensaje_stock_insuficiente }}',
+        }).then(() => {
+            // Redirecciona al usuario a la página principal (o a donde desees) después de cerrar la alerta
+            window.location.href = '{% url "index" %}';
+        });
+    </script>
+{% endif %}
+{% endblock %}
+

@@ -1,0 +1,37 @@
+{%extends "layout.html"%}
+{%block content%}
+{% load static %}
+<style>
+    h2 {
+        color: #677F82;  /* Cambia el color del texto del h2 */
+    }
+
+    form {
+        display: inline-block;  /* Para que el formulario no ocupe toda la anchura */
+        text-align: left;  /* Alinea el texto del formulario a la izquierda */
+        padding: 3rem;
+    }
+
+    button {
+        background-color: #677F82;  /* Cambia el color de fondo del botón a "bebe bebe" */
+        padding: 10px;  /* Ajusta el padding del botón */
+        color: white;
+        margin-top: 10px;  /* Espaciado superior para separar el botón del resto del formulario */
+        display: block;  /* Hace que el botón ocupe toda la anchura del contenedor */
+        margin-left: auto;  /* Centra el botón horizontalmente */
+        margin-right: auto;  /* Centra el botón horizontalmente */
+    }
+</style>
+
+<div class="container">
+    <p>Mathilo quiere dar la mejor experiencia a nuestros clientes por eso creamos esta parte.</p>
+    <h2>Pedidos personalizados es donde los clientes pondrán pedir sus pedidos personalizados, llenando este formulario, para que puedes realizar tus peticiones</h2>
+    <h2>Crear Pedido Personalizado</h2>
+    <form method="post" action="{% url 'crear_pedido_personalizado' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enviar Pedido</button>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+{% load static %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <p>Precio: $ {{carrito.total}}</p>
+        </div>  
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+{% block content %}
+{% load static %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="container">
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ producto.image.url }}" alt="{{ producto.nombre }}" class="img-fluid" style="width: 650px; height: 475px;">
+        </div>
+        <div class="col-md-6" style="padding-left: 100px;" >
+            <h2>{{ producto.nombre }}</h2>
+            <p>Categoría: {{ producto.categoria }}</p>
+            <p>Descripción: {{ producto.descripcion }}</p>
+            <p>Peso: {{ producto.peso }} kg</p>
+            <p>Altura: {{ producto.altura }} cm</p>
+            <p>Ancho: {{ producto.ancho }} cm</p>
+            <p>Largo: {{ producto.largo }} cm</p>
+            <p>Material: {{ producto.material }}</p>
+            <p>Color: {{ producto.color }}</p>
+            <p>Precio: ${{ producto.precio }}</p>
+            <p>Stock: {{ producto.stock }} </p>
+            {% if producto.stock > 0 %}
+                <button class="btn-cart welcome-add-cart" id="add-to-cart">Añadir al carrito</button>
+            {% else %}
+                <button class="btn-cart welcome-add-cart welcome-more-info" disabled>Sin stock</button>
+            {% endif %}
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+    </div>
+</div>
+
+		<!--footer start-->
+		<footer id="footer"  class="footer">
+			<div class="container">
+				<div class="hm-footer-copyright text-center">
+					<div class="footer-social">
+						<a href="#"><i class="fa fa-facebook"></i></a>	
+						<a href="#"><i class="fa fa-instagram"></i></a>
+						<a href="#"><i class="fa fa-linkedin"></i></a>
+						<a href="#"><i class="fa fa-pinterest"></i></a>
+						<a href="#"><i class="fa fa-behance"></i></a>	
+					</div>
+					<p>
+                                            &copy;copyright. <a href="https://www.themesine.com/">Mathilo S.A.</a> 2023
+					</p><!--/p-->
+				</div><!--/.text-center-->
+			</div><!--/.container-->
+
+			<div id="scroll-Top">
+				<div class="return-to-top">
+					<i class="fa fa-angle-up " id="scroll-top" data-toggle="tooltip" data-placement="top" title="" data-original-title="Back to Top" aria-hidden="true"></i>
+				</div>
+				
+			</div><!--/.scroll-Top-->
+			
+        </footer><!--/.footer-->
+		<!--footer end-->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    document.getElementById('add-to-cart').addEventListener('click', function() {
+        // Agrega un log para verificar el valor de producto.id
+        console.log("ID del producto:", {{ producto.id }});
+
+        fetch(`/agregar_al_carrito/{{ producto.id }}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Éxito!',
+                text: 'Se guardó de la manera correcta',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Pregunta si desea hacer otra compra
+                    Swal.fire({
+                        icon: 'question',
+                        title: '¿Desea hacer otra compra?',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí',
+                        cancelButtonText: 'No',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/';  // Redirige al index
+                        }
+                    });
+                }
+            });
+        })
+        .catch(error => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Ha ocurrido un error al añadir el producto al carrito',
+            });
+        });
+    });
+</script>
+
+{% endblock %}
+
+

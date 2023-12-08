@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+      <h2 class="text-center mb-4">Editar Perfil</h2>
+      <form method="post" action="{% url 'editarPerfil' %}" class="needs-validation" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-cart welcome-add-cart mt-3">Guardar cambios</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+

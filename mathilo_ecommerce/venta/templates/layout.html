@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+{% load static %}
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Mathilo</title>
+        <link href="{% static 'css/animate.css' %}" rel="stylesheet"> 
+        <link href="{% static 'css/bootsnav.css' %}" rel="stylesheet">
+		<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+		<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+		<link href="{% static 'css/linearicons.css' %}" rel="stylesheet">
+        <link href="{% static 'css/animate.css' %}" rel="stylesheet">
+        <link href="{% static 'css/owl.carousel.min.css' %}" rel="stylesheet">
+        <link href="{% static 'css/owl.theme.default.min.css' %}" rel="stylesheet">
+		<link href="{% static 'css/style.css' %}" rel="stylesheet">
+		<link href="{% static 'css/responsive.css' %}" rel="stylesheet">
+		<link rel="stylesheet" href="'https://api.flaticon.com/v2/items/icons'">
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	
+<!-- kjj -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    </head>
+
+	<style>
+		a {
+			text-decoration: none;
+			color: #000;
+		}
+
+		a:hover{
+			color: #000;
+		}
+
+	</style>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+		<div class="container">
+
+			<a href="{% url 'index' %}">
+				<img class="logo" src="{% static 'images/mathilo/mathilo-sin-fondo.png' %}" alt="mathilo"/>
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
+					<div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+						<ul class="nav navbar-nav" data-in="fadeInDown" data-out="fadeOutUp">
+							<li><a href="{% url 'index' %}">Inicio</a></li>
+							<li><a href="{% url 'nosotros' %}">Nosotros</a></li>
+						</ul>
+					</div>
+				</ul>
+				<form class="d-flex" role="search">
+					<input class="form-control me-2" type="search" placeholder="¿Qué buscas?" aria-label="Search">
+					<button class="btn btn-custom" type="submit">Buscar</button>
+				</form>
+			</div>
+			<div class="attr-nav">
+				<ul>
+					<li class="dropdown">
+						<a href="{% url 'carrito' %}" class="dropdown-toggle" data-toggle="dropdown" style="text-decoration: none;">
+							<span class="lnr lnr-cart"></span>
+						</a>
+						<ul class="dropdown-menu cart-list s-cate">
+							<li class="total">
+								<span>Total: $0.00</span>
+								<button class="btn-cart pull-right" onclick="window.location.href='#'">view cart</button>
+							</li>
+						</ul>
+					</li>
+
+					<li>
+						<a href="{% url 'perfil_usuario' %}" style="text-decoration: none;">
+							<span class="lnr lnr-user"></span> <!-- Reemplaza lnr-user con la clase de icono de usuario que desees -->
+						</a>
+					</li>
+					{% if request.user.is_authenticated %}
+					<li><a href="{% url 'exit' %}">Cerrar sesión</a></li>
+					{% else %}
+						<li><a href="{% url 'login' %}">Ingresar</a></li>
+					{% endif %}
+				</ul>
+			</div>
+
+			<div class="product-categories text-center">
+				<ul>
+					<li><a href="{% url 'muebles' %}"><i class="lnr lnr-home"></i> <span class="hidden-xs">Muebles</span></a></li>
+					<li><a href="{% url 'cuadros' %}"><i class="lnr lnr-picture"></i> <span class="hidden-xs">Cuadros</span></a></li>
+					<li><a href="{% url 'accesorios' %}"><i class="lnr lnr-star"></i> <span class="hidden-xs">Accesorios</span></a></li>
+					<li><a href="{% url 'papel_tapiz' %}"><i class="lnr lnr-file-empty"></i><span class="hidden-xs"> Papel Tapiz</span></a></li>
+					<li><a href="{% url 'calcomanias' %}"><i class="lnr lnr-diamond" style="color: #ffffff;"></i><span class="hidden-xs"> Calcomanías</span></a></li>
+					<li><a href="{% url 'crear_pedido_personalizado' %}"><i class="lnr lnr-magic-wand"></i> <span class="hidden-xs"> Personalizar</span></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	
+
+
+	<!--welcome-hero end -->
+	<script src="{% static 'js/bootsnav.js' %}"></script>
+	<script src="{% static 'js.bootstrap.min.js' %}"></script>
+	<script src="{% static 'js.custom.js'%}"></script>
+	<script src="{% static 'js/jquery.js' %}"></script>
+	<script src="{% static 'js.owl.carousel.min.js' %}"></script>
+	
+
+	<script>
+		window.onscroll = function() {
+			var nav = document.querySelector('.navbar');
+			if (window.scrollY > 0) {
+				nav.classList.add('bg-white');
+			} else {
+				nav.classList.remove('bg-white');
+			}
+		};
+	</script>
+</html>
+
+
+
+{%block content%} {%endblock%}

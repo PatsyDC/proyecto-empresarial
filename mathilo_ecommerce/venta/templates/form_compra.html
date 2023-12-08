@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+{% block content %}
+{% load static %}
+
+<script src="https://www.paypal.com/sdk/js?client-id=Ad7lgHNduulCV1SRFZc4o6DBWqfHW-hyIYH3DeJnJB4-6ehTBtSms7QrnfOS19JQbluC8zfWyiy2LKIY&currency=USD"></script>
+    <div class="container">
+        <br>
+        <p>Total del Carrito: ${{ total_carrito }}</p>
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Artículo</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in carrito %}
+                    <tr>
+                        <td>{{ item.producto.nombre }}</td>
+                        <td>${{ item.total }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container mt-5">
+        <form method="post" action="{% url 'form_compra' %}">
+            {% csrf_token %}
+            <label for="fecha_entrega">Fecha de entrega:</label>
+            <input type="date" id="fecha_entrega" name="fecha_entrega" required>
+            <button type="submit">Confirmar pedido</button>
+        </form>
+    </div>
+
+    <div class="container mt-5">
+        <h1><center>MATHILO: Pagos</center></h1>
+        <div class="card mx-auto" style="width: 25rem;">
+            <div class="card-body text-center">
+                <!-- Set up a container element for the button -->
+                <div id="paypal-button-container">
+                    <script>
+                        paypal.Buttons({
+                            style:{
+                                color: 'blue',
+                                shape: 'pill',
+                                label: 'pay'
+                            },
+                            createOrder: function(data, actions){
+                                return actions.order.create({
+                                    purchase_units:[{
+                                        amount: {
+                                            value: '${{ item.total }}'
+                                        }
+                                    }]
+                                });
+                            },
+                
+                            onApprove: function(data){
+                                alert("Pago completado");
+                                console.log(data);
+                            },
+                
+                            onCancel: function(data){
+                                alert("Pago cancelado");
+                                console.log(data);
+                            }
+                        }).render('#paypal-button-container');
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+
+
+{% endblock %}

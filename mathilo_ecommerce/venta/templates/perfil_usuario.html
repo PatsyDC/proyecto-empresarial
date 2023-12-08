@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block content %}
+{% load static %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Hola {{ user.username}}</h1>
+            <br>
+            <h2>Tus últimas compras: </h2>
+            <br>
+            {% if carritos_comprados %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for carrito in carritos_comprados %}
+                            <tr>
+                                <td>{{ carrito.producto.nombre }}</td>
+                                <td>{{ carrito.cantidad }}</td>
+                                <td>{{ carrito.total }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No has realizado compras aún.</p>
+            {% endif %}
+        </div>
+        <div class="col-md-6" style="padding-left: 100px;" >
+            <a href="{% url 'editarPerfil' %}" class="btn-cart welcome-add-cart" style="text-align: center;">Editar Perfil</a>
+        </div>
+    </div>
+
+
+</div>
+
+{% endblock %}
